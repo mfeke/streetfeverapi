@@ -23,21 +23,21 @@ app.get("/", (req, res) => {
 
 
 
-// const db = require("./models");
-// db.mongoose.set('strictQuery', true);
+const db = require("./models");
+db.mongoose.set('strictQuery', true);
 
-// db.mongoose
-//   .connect(process.env.MONGO_DB, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true
-//   })
-//   .then(() => {
-//     console.log("Connected to the database!");
-//   })
-//   .catch(err => {
-//     console.log("Cannot connect to the database!", err);
-//     process.exit();
-//   });
+db.mongoose
+  .connect(process.env.MONGO_DB, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+  .then(() => {
+    console.log("Connected to the database!");
+  })
+  .catch(err => {
+    console.log("Cannot connect to the database!", err);
+    process.exit();
+  });
 
 // app.use('/api/auth', userRouter)
 // app.use('/api/app', categoryRouter)
