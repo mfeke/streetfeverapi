@@ -2,10 +2,10 @@ const bodyParser = require("body-parser")
 const express = require("express")
 
 const app = express()
-const PORT = process.env.PORT ||300
+const PORT = process.env.PORT || 300
 const cors = require("cors")
-// const userRouter = require("./routes/user.route")
-// const categoryRouter = require("./routes/category.route")
+const userRouter = require("./routes/user.route")
+const categoryRouter = require("./routes/category.route")
 app.use(cors());
 
 app.use(bodyParser.json())
@@ -39,12 +39,12 @@ db.mongoose
     process.exit();
   });
 
-// app.use('/api/auth', userRouter)
-// app.use('/api/app', categoryRouter)
+app.use('/api/auth', userRouter)
+app.use('/api/app', categoryRouter)
 
 
 app.listen(PORT, () => {
   console.log(`Server running at port:${PORT}`)
-}) 
+})
 
 module.exports = app;
