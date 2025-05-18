@@ -2,7 +2,7 @@ const bodyParser = require("body-parser")
 const express = require("express")
 
 const app = express()
-const PORT = process.env.PORT || 300
+const PORT = process.env.PORT || 3000
 const cors = require("cors")
 const userRouter = require("./routes/user.route")
 const categoryRouter = require("./routes/category.route")
