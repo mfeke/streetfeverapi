@@ -2,7 +2,7 @@ const bodyParser = require("body-parser")
 const express = require("express")
 
 const app = express()
-const PORT = process.env.PORT || 300
+const PORT = process.env.PORT ||300
 const cors = require("cors")
 // const userRouter = require("./routes/user.route")
 // const categoryRouter = require("./routes/category.route")
@@ -27,7 +27,7 @@ const db = require("./models");
 db.mongoose.set('strictQuery', true);
 
 db.mongoose
-  .connect(process.env.MONGO_DB, {
+  .connect(db.url, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
@@ -45,6 +45,6 @@ db.mongoose
 
 app.listen(PORT, () => {
   console.log(`Server running at port:${PORT}`)
-})
+}) 
 
 module.exports = app;
