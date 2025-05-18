@@ -20,8 +20,8 @@ const PORT = 2022
 
 app.use(cors());
 
-const db = require("./models");
-db.mongoose.set('strictQuery', true);
+// const db = require("./models");
+// db.mongoose.set('strictQuery', true);
 
 //  db.mongoose
 //    .connect(db.url, {
