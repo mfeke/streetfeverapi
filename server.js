@@ -8,10 +8,10 @@ const cors = require("cors")
 // const categoryRouter = require("./routes/category.route")
 app.use(cors());
 
-// app.use(bodyParser.json())
-// app.use(bodyParser.urlencoded({
-//   extended: true
-// }));
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 
 
 
@@ -23,21 +23,21 @@ app.get("/", (req, res) => {
 
 
 
-// const db = require("./models");
-// db.mongoose.set('strictQuery', true);
+const db = require("./models");
+db.mongoose.set('strictQuery', true);
 
-// db.mongoose
-//   .connect(db.url, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true
-//   })
-//   .then(() => {
-//     console.log("Connected to the database!");
-//   })
-//   .catch(err => {
-//     console.log("Cannot connect to the database!", err);
-//     process.exit();
-//   });
+db.mongoose
+  .connect(db.url, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+  .then(() => {
+    console.log("Connected to the database!");
+  })
+  .catch(err => {
+    console.log("Cannot connect to the database!", err);
+    process.exit();
+  });
 
 // app.use('/api/auth', userRouter)
 // app.use('/api/app', categoryRouter)
