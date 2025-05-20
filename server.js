@@ -40,7 +40,7 @@ db.mongoose
   });
 
 app.use('/api/auth', userRouter)
-app.use('/api/app', categoryRouter)
+app.use('/api/category', categoryRouter)
 
 
 app.listen(PORT, () => {

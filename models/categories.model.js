@@ -3,11 +3,13 @@ const mongoose = require("mongoose");
 const Categories = mongoose.model(
     "Categories",
     new mongoose.Schema({
-        CatName:String,
-        mainCategories:Array,
-        categoryValue:String, 
-        CategoriesArray:Array,
-        tagCodes:Array
+        name: String,
+        parent_id: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Categories"
+        }],
+        categoryValue: String,
+        categoriesArray: Array,
     })
 
 )
