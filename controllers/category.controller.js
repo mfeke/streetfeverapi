@@ -4,7 +4,7 @@ const Category = require("../models/categories.model");
 
 exports.createCategory = async (req, res) => {
 
-    const { name, icon, returnV,  parent_name, categoryValue } = req.body
+    const { name, icon, returnV, image,  parent_name, categoryValue } = req.body
 
     const parent_id = await Category.find({ name: parent_name })
     const existingCategory = await Category.find({ name })
@@ -18,6 +18,7 @@ exports.createCategory = async (req, res) => {
             const newCategory = new Category({
                 name,
                 parent_id: null,
+                image,
                 returnV,
                 icon,
                 categoryValue,
@@ -46,6 +47,7 @@ exports.createCategory = async (req, res) => {
         if (name && categoryValue) {
             const newCategory = new Category({
                 name,
+                image,
                 parent_id: parent_id[0]._id,
                 icon,
                 categoryValue

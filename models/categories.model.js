@@ -5,6 +5,7 @@ const Categories = mongoose.model(
     new mongoose.Schema({
         name: String,
         icon:String,
+        image:String,
         returnV:Boolean,
         parent_id: [{
             type: mongoose.Schema.Types.ObjectId,
