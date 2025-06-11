@@ -4,12 +4,13 @@ const Categories = mongoose.model(
     "Categories",
     new mongoose.Schema({
         name: String,
+        icon:String,
+        returnV:Boolean,
         parent_id: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: "Categories"
         }],
         categoryValue: String,
-        categoriesArray: Array,
     })
 
 )
