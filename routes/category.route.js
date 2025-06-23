@@ -8,6 +8,6 @@ router.post("/createCategory", controller.createCategory)
 router.get("/getAllCategory", controller.AllCategory)
 router.get("/getMainCategory", controller.getMainCategory)
 router.get("/getSubCategory/:name", controller.getSubCategory)
-
+router.get("/getCategoryByName/:name",controller.getCategoryByName)
 module.exports = router; // Export the router
 
