@@ -7,6 +7,6 @@ const controller = require("../controllers/product.controllers");
 // Define routes
 router.get("/getAllProduct", controller.getAllProduct)
 router.get("/getProductById/:id", controller.getProductById)
-router.get("/getProductsByName/:name")
+router.get("/getProductsByName/:name", controller.getProductsByName)
 module.exports = router; // Export the router
 
