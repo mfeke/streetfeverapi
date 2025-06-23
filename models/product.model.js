@@ -8,7 +8,7 @@ const Product = mongoose.model(
     description:String,
     care:String,
     colour:String,
-    image: Array,
+    images: Array,
     sizes: Array,
     brand: String,
     mainCategory: Array,
