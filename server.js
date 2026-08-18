@@ -29,7 +29,7 @@ const db = require("./models");
 db.mongoose.set('strictQuery', true);
 
 db.mongoose
-  .connect('mongodb+srv://Oko:vU8oJfw6DQZDfvSl@cluster0.jyctzqj.mongodb.net/jwtb', {
+  .connect( db.url, {
   })
   .then(() => {
     console.log("Connected to the database!");
