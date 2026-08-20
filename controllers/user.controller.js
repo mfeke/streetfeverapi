@@ -25,7 +25,7 @@ exports.signup = (req, res) => {
             });
 
             user.save().then(message => {
-                return res.status(200).json({ message: "Account Created"  });
+                return res.status(200).json({ message: "Account Created" , data:email });
 
             }).catch(err => {
                 return res.status(300).json(err);
