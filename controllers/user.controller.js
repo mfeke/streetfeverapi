@@ -30,9 +30,11 @@ exports.signup = async (req, res) => {
             let newUser = await user.save()
 
             
-            return res.status(200).json({ message: "Account Created", id:newUser.id});
+            return res.status(200).json({ message: "Account Created", id:newUser.id });
 
         } else {
+
+            let oldUser = await User.findOneAndUpdate({_id:userFound.id},{ $set: {verifyCode}})
 
             return res.status(200).json({ message: "User Found ", id:userFound.id })
         }
