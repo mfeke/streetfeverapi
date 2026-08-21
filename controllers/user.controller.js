@@ -1,42 +1,48 @@
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcryptjs");
 const User = require("../models/user.model");
+const nodemailer = require('nodemailer');
 
-const authConfig = require("../db/auth.config")
+const authConfig = require("../db/auth.config");
+const { config } = require("dotenv");
 
-exports.signup = (req, res) => {
+exports.signup = async (req, res) => {
+    try {
+        res.set({
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "*",
+        })
+        let verifyCode = Math.floor(100 + Math.random() * 9000);
 
-    res.set({
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "*",
-        "Access-Control-Allow-Headers": "'Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token'",
-    });
+        const { email } = req.body;
+        if (!email) {
+            return res.send(400).json({ message: "Missing values" })
+        }
 
-    const { email } = req.body
-
-    if (!email ) {
-        return res.send(400).json({ message: "Missing values" })
-    }
-
-    User.findOne({ email }).then((userFound) => {
+        let userFound = await User.findOne({ email })
         if (!userFound) {
+
             const user = new User({
-                email, 
+                email,
+                verifyCode
             });
 
-            user.save().then(message => {
-                return res.status(200).json({ message: "Account Created" , data:email });
+            let newUser = await user.save()
 
-            }).catch(err => {
-                return res.status(300).json(err);
-            })
+            
+            return res.status(200).json({ message: "Account Created", id:newUser.id});
 
+        } else {
+
+            return res.status(200).json({ message: "User Found ", id:userFound.id })
         }
-        else {
-            return res.status(409).json({ message: "Email address already in use" })
-        }
-    })
+    } catch (err) {
+        res.status(500).send({ message: err.message });
+    }
+}
 
-};
+
+
+
 
 

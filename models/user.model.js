@@ -6,6 +6,7 @@ const User = mongoose.model(
     "User",
     new mongoose.Schema({
         email: String,
+        verifyCode: Number,
         roles:[
             {
                 type: mongoose.Schema.Types.ObjectId,
