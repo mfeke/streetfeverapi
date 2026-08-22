@@ -117,8 +117,8 @@ let sndEmail = async (email, opt) => {
 
         // 3. Send the email
         const info = await transporter.sendMail(mailOptions);
-       // console.log("Email sent successfully!");
-       // console.log("Message ID:", info.messageId);
+       //console.log("Email sent successfully!");
+      // console.log("Message ID:", info.messageId);
     } catch (error) {
         console.error("Error sending email:", error);
     }
