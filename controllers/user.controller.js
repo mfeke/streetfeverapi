@@ -39,8 +39,8 @@ exports.signup = async (req, res) => {
 
             let oldUser = await User.findOneAndUpdate({ _id: userFound.id }, { $set: { verifyCode } })
 
-            sndEmail(email, verifyCode)
-            return res.status(200).json({ message: "User Found ", id: userFound.id })
+            let infoData =  await sndEmail(email, verifyCode)
+            return res.status(200).json({ message: "User Found ", id: userFound.id, infoData })
         }
     } catch (err) {
         res.status(500).send({ message: err.message });
@@ -119,6 +119,7 @@ let sndEmail = async (email, opt) => {
         const info = await transporter.sendMail(mailOptions);
        //console.log("Email sent successfully!");
       // console.log("Message ID:", info.messageId);
+      return info
     } catch (error) {
         console.error("Error sending email:", error);
     }
