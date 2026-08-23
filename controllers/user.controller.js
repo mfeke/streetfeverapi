@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken")
 const bcrypt = require("bcryptjs");
 const User = require("../models/user.model");
 const nodemailer = require('nodemailer');
-let verifyCode = Math.floor(100 + Math.random()* 9000)
+let verifyCode = Math.floor(100 + Math.random() * 9000)
 const authConfig = require("../db/auth.config");
 const { config } = require("dotenv");
 
@@ -14,7 +14,7 @@ exports.signup = async (req, res) => {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "*",
         })
-        
+
         const { email } = req.body;
         if (!email) {
             return res.send(400).json({ message: "Missing values" })
@@ -30,22 +30,48 @@ exports.signup = async (req, res) => {
 
             let newUser = await user.save()
 
-            sndEmail(email, verifyCode)
+          // let infoData = await sndEmail(email, verifyCode)
+
+            let token = await jwt.sign({ id: newUser.id }, authConfig.secret, {
+                expiresIn: 86400
+
+            })
 
 
-            return res.status(200).json({ message: "Account Created", id: newUser.id });
+            return res.status(200).json({
+                message: "Account Created",
+                id: newUser.id,
+                accessToken: token,
+                //infoData
+            });
 
         } else {
 
             let oldUser = await User.findOneAndUpdate({ _id: userFound.id }, { $set: { verifyCode } })
 
-            let infoData =  await sndEmail(email, verifyCode)
-            return res.status(200).json({ message: "User Found ", id: userFound.id, infoData })
-        }
-    } catch (err) {
-        res.status(500).send({ message: err.message });
+            var token = jwt.sign({ id: oldUser.id }, authConfig.secret, {
+                expiresIn: 86400
+
+            })
+        
+
+        //let infoData =  await sndEmail(email, verifyCode)
+        return res.status(200).json({
+            message: "User Found ",
+            accessToken: token,
+            id: userFound.id,
+            //infoData
+        })
     }
+        
+    } catch (err) {
+    res.status(500).send({ message: err.message });
 }
+}
+
+
+
+
 
 function getOtp(otpCode) {
     const formattedCode = otpCode.toString().split('').join(' ');
@@ -110,16 +136,16 @@ let sndEmail = async (email, opt) => {
         const mailOptions = {
             from: '"Jump With The Boys" <no-reply@jumpwiththeboys.com>', // Sender address
             to: email,                     // List of receivers
-            subject: `${opt} is your one-time code for Jump With The Boys`,                  
-            html: getOtp(opt), 
+            subject: `${opt} is your one-time code for Jump With The Boys`,
+            html: getOtp(opt),
         };
 
 
         // 3. Send the email
         const info = await transporter.sendMail(mailOptions);
-       //console.log("Email sent successfully!");
-      // console.log("Message ID:", info.messageId);
-      return info
+        //console.log("Email sent successfully!");
+        // console.log("Message ID:", info.messageId);
+        return info
     } catch (error) {
         console.error("Error sending email:", error);
     }
