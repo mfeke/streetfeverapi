@@ -58,7 +58,7 @@ exports.signup = async (req, res) => {
 
             
 
-            var token = jwt.sign({ id: oldUser.id }, authConfig.secret, {
+            var token = jwt.sign({ id: userFound.id }, authConfig.secret, {
                 expiresIn: 86400
 
             })
