@@ -38,7 +38,7 @@ exports.signup = async (req, res) => {
           
             const oriCode = await code.save()
 
-          // let infoData = await sndEmail(email, verifyCode)
+            let infoData = await sndEmail(email, verifyCode)
 
             let token = await jwt.sign({ id: newUser.id }, authConfig.secret, {
                 expiresIn: 86400
@@ -64,7 +64,7 @@ exports.signup = async (req, res) => {
             })
         
 
-        //let infoData =  await sndEmail(email, verifyCode)
+        let infoData =  await sndEmail(email, verifyCode)
         return res.status(200).json({
             message: "User Found ",
             accessToken: token,
