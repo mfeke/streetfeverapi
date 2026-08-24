@@ -3,6 +3,7 @@ require("dotenv").config()
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcryptjs");
 const User = require("../models/user.model");
+const Code = require("../models/verify.model")
 const nodemailer = require('nodemailer');
 let verifyCode = Math.floor(100 + Math.random() * 9000)
 const authConfig = require("../db/auth.config");
@@ -24,11 +25,18 @@ exports.signup = async (req, res) => {
         if (!userFound) {
 
             const user = new User({
-                email,
-                verifyCode
+                email
             });
-
+  
             let newUser = await user.save()
+
+
+            const code = new  Code({
+                code:verifyCode,
+                user: newUser.id
+            })
+          
+            const oriCode = await code.save()
 
           // let infoData = await sndEmail(email, verifyCode)
 
@@ -42,6 +50,7 @@ exports.signup = async (req, res) => {
                 message: "Account Created",
                 id: newUser.id,
                 accessToken: token,
+                oriCode
                 //infoData
             });
 
@@ -83,8 +92,6 @@ exports.getProfile = async (req, res) =>{
     }
     
 }
-
-
 
 
 

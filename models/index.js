@@ -6,6 +6,7 @@ const db ={};
 db.mongoose = mongoose
 db.user = require("../models/user.model")
 db.category = require("../models/categories.model")
+db.verifyCode = require("../models/verify.model")
 db.url = dbConfig.url
 
 module.exports = db
