@@ -56,12 +56,15 @@ exports.signup = async (req, res) => {
 
         } else {
 
-            let oldUser = await User.findOneAndUpdate({ _id: userFound.id }, { $set: { verifyCode } })
+            
 
             var token = jwt.sign({ id: oldUser.id }, authConfig.secret, {
                 expiresIn: 86400
 
             })
+
+            let code = await Code.findOneAndUpdate({ user: userFound.id }, { $set: { code:verifyCode } })
+
         
 
         let infoData =  await sndEmail(email, verifyCode)
@@ -69,6 +72,7 @@ exports.signup = async (req, res) => {
             message: "User Found ",
             accessToken: token,
             id: userFound.id,
+            code:verifyCode
             //infoData
         })
     }
