@@ -16,29 +16,28 @@ exports.signup = async (req, res) => {
             "Access-Control-Allow-Methods": "*",
         })
 
-        const { email } = req.body;
-        if (!email) {
+
+        const { firstName, lastName, email, pass } = req.body
+
+        const hashedPassword = bcrypt.hashSync(pass, 8);
+
+
+        if (!email && !firstName && !lastName && !hashedPassword) {
             return res.send(400).json({ message: "Missing values" })
         }
 
         let userFound = await User.findOne({ email })
         if (!userFound) {
-
-            const user = new User({
+            let user = new User({
+                firstName,
+                pass: hashedPassword,
+                lastName,
                 email
-            });
-  
+            })
+
             let newUser = await user.save()
 
 
-            const code = new  Code({
-                code:verifyCode,
-                user: newUser.id
-            })
-          
-            const oriCode = await code.save()
-
-            let infoData = await sndEmail(email, verifyCode)
 
             let token = await jwt.sign({ id: newUser.id }, authConfig.secret, {
                 expiresIn: 86400
@@ -50,51 +49,72 @@ exports.signup = async (req, res) => {
                 message: "Account Created",
                 id: newUser.id,
                 accessToken: token,
-                oriCode
-                //infoData
             });
 
         } else {
+            return res.status(400).json({ message: "Email already exists." });
 
-            
+        }
 
-            var token = jwt.sign({ id: userFound.id }, authConfig.secret, {
-                expiresIn: 86400
-
-            })
-
-            let code = await Code.findOneAndUpdate({ user: userFound.id }, { $set: { code:verifyCode } })
-
-        
-
-        let infoData =  await sndEmail(email, verifyCode)
-        return res.status(200).json({
-            message: "User Found ",
-            accessToken: token,
-            id: userFound.id,
-            code:verifyCode
-            //infoData
-        })
-    }
-        
     } catch (err) {
-    res.status(500).send({ message: err.message });
+        res.status(500).send({ message: err.message });
+    }
 }
+exports.signin = async (req, res) => {
+    try {
+        let { email, pass } = req.body
+        let user = await User.findOne({ email })
+        if (!user) {
+            return res.status(404).send({ message: "User Not found" })
+
+        }
+        let passwordlsVaild = bcrypt.compareSync(
+            pass
+        )
+        if (!passwordlsVaild) {
+            return res.status(401).send({
+                accessToken: null,
+                message: "Invalid Password!"
+            })
+        }
+        let token = jwt.sign({ id: user.id }, config.secret, {
+            expiresIn: 86400
+
+        })
+res.status(200).send({
+                id: user._id, 
+                            fullName: user.fullName, 
+                                        email: user.email,
+                                    
+
+
+
+                                                                accessToken:token
+
+                                                                        })
+
+
+
+    } catch (err) {
+        res.status(500).send({ message: err.message });
+    }
+
+
 }
 
-exports.getProfile = async (req, res) =>{
+exports.getProfile = async (req, res) => {
 
     try {
 
-        const { userId} = req
-        let user = await User.findOne({_id:userId})
+        const { userId } = req
+        let user = await User.findOne({ _id: userId })
         res.status(200).json(user)
-        
+
     } catch (err) {
-        res.status(500).json({message: err.message})
-        
+        res.status(500).json({ message: err.message })
+
     }
-    
+
 }
 
 
