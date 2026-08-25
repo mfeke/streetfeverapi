@@ -64,34 +64,37 @@ exports.signin = async (req, res) => {
     try {
         let { email, pass } = req.body
         let user = await User.findOne({ email })
+
         if (!user) {
             return res.status(404).send({ message: "User Not found" })
 
         }
+
         let passwordlsVaild = bcrypt.compareSync(
-            pass
+            pass,
+            user.pass
         )
+
+        // res.status(200).json(passwordlsVaild)
         if (!passwordlsVaild) {
             return res.status(401).send({
                 accessToken: null,
                 message: "Invalid Password!"
             })
         }
-        let token = jwt.sign({ id: user.id }, config.secret, {
+
+
+        let token = jwt.sign({ id: user.id }, authConfig.secret, {
             expiresIn: 86400
 
         })
-res.status(200).send({
-                id: user._id, 
-                            fullName: user.fullName, 
-                                        email: user.email,
-                                    
+        res.status(200).send({
+            id: user._id,
+            fullName: user.fullName,
+            email: user.email,
+            accessToken: token
 
-
-
-                                                                accessToken:token
-
-                                                                        })
+        })
 
 
 
