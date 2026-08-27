@@ -4,8 +4,8 @@ const Category = require("../models/categories.model");
 exports.createCategory = async (req, res) => {
   const { name, description, returnV, image } = req.body;
 
-  let category = await Category.findOne({ name, description, image })
-  if (!category) {
+  let categoryFound = await Category.findOne({ name, description, image })
+  if (!categoryFound) {
     const newCategory = new Category({
       name,
       description,
@@ -26,13 +26,18 @@ exports.createCategory = async (req, res) => {
 }
 
 exports.createSubCategory = async (req, res) => {
-
+  const { id } = req.params
   const { name, returnV, image, parentId } = req.body;
-  let parentCategory = await Category.findOne({ id: parentId })
+  let parentCategory = await Category.findOne({ id })
   if (parentCategory) {
+    let category = await Category.findOne({ name, parentId: parentCategory._id })
+    if (category) {
+      return res.status(400).json({ message: "Category already exists" })
+    }
+
     const newCategory = new Category({
       name,
-      parentId: parentCategory.id,
+      parentId: parentCategory._id,
       image,
       returnV,
 
@@ -41,14 +46,14 @@ exports.createSubCategory = async (req, res) => {
     await newCategory.save();
 
     return res.status(200).json({ message: "Category created successfully" });
-  
 
-}
+
+  }
   else {
-  console.log('Category does not exist')
-  res.status(400).json({ message: "Category does not exist" })
+    console.log('Category does not exist')
+    res.status(400).json({ message: "Category does not exist" })
 
-}
+  }
 
 }
 // if (parent_name) {
