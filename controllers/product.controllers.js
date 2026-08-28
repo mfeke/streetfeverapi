@@ -1,4 +1,35 @@
+const { errorMonitor } = require("nodemailer/lib/xoauth2");
 const Product = require("../models/product.model");
+const Category = require("../models/categories.model")
+exports.createProduct = async (req, res) =>{
+  try {
+   const { id} = req.params
+    const { name , price, salePrice, description, colour, sizes, images, category  } = req.body
+
+    let categoryFound = await Category.findOne({id})
+    if(!categoryFound){
+      return res.status(400).json({message:"Category does not exist"})
+    }
+    let  newProduct =  new Product({
+      name, 
+      price, 
+      salePrice,
+      description,
+      colour,
+      sizes,
+      images,
+      category:categoryFound._id
+    })
+
+    await newProduct.save()
+    return res.status(200).json({message:'Product is create successful'})
+
+  }catch(err){
+    res.status(500).json({message:err})
+  }
+}
+
+
 
 exports.getAllProduct = async (req, res) => {
   try {
