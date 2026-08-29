@@ -1,7 +1,6 @@
 require("dotenv").config()
 const bodyParser = require("body-parser")
 const express = require("express")
-
 const app = express()
 const PORT = process.env.PORT
 const cors = require("cors")
@@ -9,7 +8,25 @@ const userRouter = require("./routes/user.route")
 const productRouter = require("./routes/product.route")
 const verifyRouter = require("./routes/verify.route")
 const categoryRouter = require("./routes/category.route")
+
+const corsOptions = {
+  origin: 'https://expert-cod-gx77975w9w542w66g-4200.app.github.dev/', // Replace with your actual frontend URL
+  credentials: true // Enable if you are passing cookies or authorization headers
+};
+
 app.use(cors());
+app.use(cors({
+  origin: '*', // Or specify your Angular dev URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
@@ -30,7 +47,7 @@ const db = require("./models");
 db.mongoose.set('strictQuery', true);
 
 db.mongoose
-  .connect( db.url, {
+  .connect(db.url, {
   })
   .then(() => {
     console.log("Connected to the database!");
