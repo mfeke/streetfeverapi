@@ -20,7 +20,7 @@ exports.createProduct = async (req, res) =>{
      // images,
       //category:categoryFound._id
     //})
-    console.log(name)
+    console.log(req.files)
     //await newProduct.save()
    // return res.status(200).json({message:'Product is create successful'})
 

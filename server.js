@@ -9,10 +9,7 @@ const productRouter = require("./routes/product.route")
 const verifyRouter = require("./routes/verify.route")
 const categoryRouter = require("./routes/category.route")
 
-const corsOptions = {
-  origin: 'https://expert-cod-gx77975w9w542w66g-4200.app.github.dev/', // Replace with your actual frontend URL
-  credentials: true // Enable if you are passing cookies or authorization headers
-};
+
 
 app.use(cors());
 app.use(cors({
