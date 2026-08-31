@@ -34,7 +34,6 @@ const s3 = new S3Client({
 let upload = multer({
     storage: multerS3({
         s3: s3,
-        acl: "public-read",
         bucket: process.env.BUCKET_NAME,
         key: function (req, file, cb) {
             cb(null, Date.now() + "-" + file.originalname);

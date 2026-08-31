@@ -25,8 +25,8 @@ exports.createProduct = async (req, res) => {
     // images,
     //category:categoryFound._id
     //}) 
-    console.log(req.body)
-    res.status(200).json({data:req.files.location})
+    console.log(req.body, req.files)
+   // res.status(200).json({data:req.files.location})
     //const results = await imageUpload.UploadImages(req.files, (progress) => {
       //console.log(`[${progress.fileName}]: ${progress.percentage}%`);
    // });

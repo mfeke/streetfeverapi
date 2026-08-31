@@ -89,7 +89,7 @@ exports.AllCategory = async (req, res) => {
 };
 
 exports.getMainCategory = async (req, res) => {
-  const categories = await Category.find({ parent_id: null });
+  const categories = await Category.find({ parentId: null });
   res.status(200).json(categories);
 };
 exports.getCategoryByName = async (req, res) => {
