@@ -12,7 +12,8 @@ exports.createProduct = async (req, res) => {
     const { name, price, priceSale, description, colour, sizes, category } = req.body
 let images = req.files
     images = images.map(info => info.location);
-    let categoryFound = await Category.findOne({ id })
+    
+
     //if(!categoryFound){
     // return res.status(400).json({message:"Category does not exist"})
     // }
@@ -26,15 +27,9 @@ let images = req.files
     category:JSON.parse(category)
    }) 
     
-    //res.status(200).json({data:req.files.location})
-    //const results = await imageUpload.UploadImages(req.files, (progress) => {
-      //console.log(`[${progress.fileName}]: ${progress.percentage}%`);
-   // });
-    
-  //let imageLocation = await imageUpload.UploadImages(req.files)
- // console.log(imageLocation)
+  
    await newProduct.save()
-return res.status(200).json({message:'Product is create successful'})
+   return res.status(200).json({message:'Product is create successful'})
 
 }catch (err) {
   console.error(err)

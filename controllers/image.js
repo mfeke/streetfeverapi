@@ -15,7 +15,8 @@ exports.UploadImages = async (fileImages) => {
                 const params = {
                         Bucket: process.env.BUCKET_NAME,
                         Key: fileImage.originalname,
-                        Body: fileImage.buffer
+                        Body: fileImage.buffer,
+                        ACL: "public-read"
                 };
 
                 return s3.upload(params).promise();
