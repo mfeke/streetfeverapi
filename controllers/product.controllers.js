@@ -9,34 +9,35 @@ const imageUpload = require("../controllers/image")
 exports.createProduct = async (req, res) => {
   try {
     const { id } = req.params
-    const { name, price, salePrice, description, colour, sizes, images, category } = req.body
-
+    const { name, price, priceSale, description, colour, sizes, category } = req.body
+let images = req.files
+    images = images.map(info => info.location);
     let categoryFound = await Category.findOne({ id })
     //if(!categoryFound){
     // return res.status(400).json({message:"Category does not exist"})
     // }
-    //let  newProduct =  new Product({
-    // name, 
-    // price, 
-    // salePrice,
-    //description,
-    //colour,
-    //sizes,
-    // images,
-    //category:categoryFound._id
-    //}) 
-    console.log(req.body, req.files)
-   // res.status(200).json({data:req.files.location})
+    let  newProduct =  new Product({
+    name, 
+    price: Number (price), 
+    salePrice:priceSale,
+    description,
+    stock:JSON.parse(sizes),
+    images,
+    category:JSON.parse(category)
+   }) 
+    
+    //res.status(200).json({data:req.files.location})
     //const results = await imageUpload.UploadImages(req.files, (progress) => {
       //console.log(`[${progress.fileName}]: ${progress.percentage}%`);
    // });
     
   //let imageLocation = await imageUpload.UploadImages(req.files)
  // console.log(imageLocation)
-  //await newProduct.save()
-  // return res.status(200).json({message:'Product is create successful'})
+   await newProduct.save()
+return res.status(200).json({message:'Product is create successful'})
 
 }catch (err) {
+  console.error(err)
   res.status(500).json({ message: err })
 }
 }
