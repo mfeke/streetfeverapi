@@ -26,14 +26,18 @@ exports.createCategory = async (req, res) => {
 }
 
 exports.createSubCategory = async (req, res) => {
+
   const { id } = req.params
-  const { name, returnV, image, parentId } = req.body;
-  let parentCategory = await Category.findOne({ id })
+    const { name, returnV, image, parentId } = req.body;
+
+  let category = await Category.findOne({ name, parentId: id })
+  if (category) {
+    return res.status(400).json({ message: "Category already exists" })
+  }
+
+
+  let parentCategory = await Category.findOne({ id})
   if (parentCategory) {
-    let category = await Category.findOne({ name, parentId: parentCategory._id })
-    if (category) {
-      return res.status(400).json({ message: "Category already exists" })
-    }
 
     const newCategory = new Category({
       name,
@@ -95,7 +99,7 @@ exports.getMainCategory = async (req, res) => {
 exports.getCategoryByName = async (req, res) => {
   try {
     const { name } = req.params;
-    const category = await Category.findOne({ categoryValue: name });
+    const category = await Category.findOne({  name });
     res.status(200).json(category);
 
   } catch (error) {
@@ -104,7 +108,7 @@ exports.getCategoryByName = async (req, res) => {
   }
 };
 exports.getSubCategory = async (req, res) => {
-  const category = await Category.findOne({ categoryValue: req.params.name });
-  const categories = await Category.find({ parent_id: category._id });
+  const categories = await Category.find({ name: req.params.name });
+  
   res.status(200).json(categories);
 };
