@@ -1,4 +1,5 @@
 
+const Categories = require("../models/categories.model");
 const Category = require("../models/categories.model");
 
 exports.createCategory = async (req, res) => {
@@ -108,7 +109,9 @@ exports.getCategoryByName = async (req, res) => {
   }
 };
 exports.getSubCategory = async (req, res) => {
-  const categories = await Category.find({ name: req.params.name });
+  const category = await Category.find({ name: req.params.name });
+
+  const categories = await Category.find({parentId:category._id})
   
   res.status(200).json(categories);
 };
