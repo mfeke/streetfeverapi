@@ -113,5 +113,5 @@ exports.getSubCategory = async (req, res) => {
 
   const categories = await Category.find({parentId:category._id})
   
-  res.status(200).json(categories);
+  res.status(200).json(category);
 };
