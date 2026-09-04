@@ -87,7 +87,7 @@ exports.createSubCategory = async (req, res) => {
 
 exports.AllCategory = async (req, res) => {
   const categories = await Category.find();
-  res.status(200).json(categories);
+  res.status(200).json({categories});
 };
 
 exports.getMainCategory = async (req, res) => {
