@@ -37,27 +37,22 @@ exports.createSubCategory = async (req, res) => {
   }
 
 
-  let parentCategory = await Category.findOne({ id})
+  let parentCategory = await Category.findOne({ _id: id})
+
+
   if (parentCategory) {
 
     const newCategory = new Category({
       name,
       parentId: parentCategory._id,
-      image,
-      returnV,
-
+      
     });
-
     await newCategory.save();
-
-    return res.status(200).json({ message: "Category created successfully" });
-
-
+    return res.status(200).json({ message: "Sub Category created successfully" });
   }
   else {
     console.log('Category does not exist')
     res.status(400).json({ message: "Category does not exist" })
-
   }
 
 }
