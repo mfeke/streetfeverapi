@@ -3,7 +3,7 @@ const Categories = require("../models/categories.model");
 const Category = require("../models/categories.model");
 
 exports.createCategory = async (req, res) => {
-  const { name, description, returnV, image } = req.body;
+  const { name, status, description, returnV, image } = req.body;
 
   let categoryFound = await Category.findOne({ name, description, image })
   if (!categoryFound) {
@@ -12,6 +12,7 @@ exports.createCategory = async (req, res) => {
       description,
       parentId: null,
       image,
+      status,
       returnV
     });
     await newCategory.save();
@@ -29,7 +30,7 @@ exports.createCategory = async (req, res) => {
 exports.createSubCategory = async (req, res) => {
 
   const { id } = req.params
-    const { name, returnV, image, parentId } = req.body;
+    const { name, status, image, parentId } = req.body;
 
   let category = await Category.findOne({ name, parentId: id })
   if (category) {
@@ -44,6 +45,7 @@ exports.createSubCategory = async (req, res) => {
 
     const newCategory = new Category({
       name,
+      status,
       parentId: parentCategory._id,
       
     });
@@ -85,7 +87,7 @@ exports.createSubCategory = async (req, res) => {
 
 exports.AllCategory = async (req, res) => {
   const categories = await Category.find();
-  res.status(200).json({ categories });
+  res.status(200).json(categories);
 };
 
 exports.getMainCategory = async (req, res) => {
