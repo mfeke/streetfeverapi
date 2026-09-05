@@ -30,7 +30,7 @@ exports.createCategory = async (req, res) => {
 exports.createSubCategory = async (req, res) => {
 
   const { id } = req.params
-    const { name, status, image, parentId } = req.body;
+  const { name, status, image, parentId } = req.body;
 
   let category = await Category.findOne({ name, parentId: id })
   if (category) {
@@ -38,7 +38,7 @@ exports.createSubCategory = async (req, res) => {
   }
 
 
-  let parentCategory = await Category.findOne({ _id: id})
+  let parentCategory = await Category.findOne({ _id: id })
 
 
   if (parentCategory) {
@@ -47,7 +47,7 @@ exports.createSubCategory = async (req, res) => {
       name,
       status,
       parentId: parentCategory._id,
-      
+
     });
     await newCategory.save();
     return res.status(200).json({ message: "Sub Category created successfully" });
@@ -90,14 +90,21 @@ exports.AllCategory = async (req, res) => {
   res.status(200).json(categories);
 };
 
-exports.updateCategory = async (req,res) =>{
+exports.updateCategory = async (req, res) => {
+  try {
+    const { id } = req.params
+    let { name, status } = req.body
 
-  const { id } = req.params
-  const { name , status} = req.body
-  await Category.findByIdAndUpdate({_id:id}, { $set: name, status})
+    
 
-  res.status(200).json({message:"Category update successfully"})
+    await Category.findByIdAndUpdate({ _id: id }, { $set: {name, status} })
 
+    res.status(200).json({ message: "Category update successfully" })
+  }
+  catch (err) {
+    console.error(err)
+    res.status(500).json({ message: err })
+  }
 
 }
 exports.getMainCategory = async (req, res) => {
@@ -107,7 +114,7 @@ exports.getMainCategory = async (req, res) => {
 exports.getCategoryByName = async (req, res) => {
   try {
     const { name } = req.params;
-    const category = await Category.findOne({  name });
+    const category = await Category.findOne({ name });
     res.status(200).json(category);
 
   } catch (error) {
@@ -118,7 +125,18 @@ exports.getCategoryByName = async (req, res) => {
 exports.getSubCategory = async (req, res) => {
   const category = await Category.findOne({ name: req.params.name });
 
-  const categories = await Category.find({parentId:category._id})
-  
+  const categories = await Category.find({ parentId: category._id })
+
   res.status(200).json(categories);
 };
+exports.deleteCategoryById = async (req, res)=>{
+  try {
+
+    const { id} = req.params
+   // await Category.findByIdAndDelete({_id:id})
+    res.status(200).json({message:'Category is delete successfully'})
+    
+  } catch (error) {
+    res.status(500).send(error)
+  }
+}
