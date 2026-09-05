@@ -6,6 +6,7 @@ const controller = require("../controllers/category.controller");
 // Define routes
 router.post("/createCategory", controller.createCategory)
 router.post("/createSubCategory/:id", controller.createSubCategory)
+router.put("/updateCategoryById/:id", controller.updateCategory)
 router.get("/getAllCategory", controller.AllCategory)
 router.get("/getMainCategory", controller.getMainCategory)
 router.get("/getSubCategory/:name", controller.getSubCategory)

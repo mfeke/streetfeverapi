@@ -90,6 +90,16 @@ exports.AllCategory = async (req, res) => {
   res.status(200).json(categories);
 };
 
+exports.updateCategory = async (req,res) =>{
+
+  const { id } = req.params
+  const { name , status} = req.body
+  await Category.findByIdAndUpdate({_id:id}, { $set: name, status})
+
+  res.status(200).json({message:"Category update successfully"})
+
+
+}
 exports.getMainCategory = async (req, res) => {
   const categories = await Category.find({ parentId: null });
   res.status(200).json(categories);
