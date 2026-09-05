@@ -133,7 +133,8 @@ exports.deleteCategoryById = async (req, res)=>{
   try {
 
     const { id} = req.params
-   // await Category.findByIdAndDelete({_id:id})
+    await Category.findByIdAndDelete({_id:id})
+   
     res.status(200).json({message:'Category is delete successfully'})
     
   } catch (error) {
