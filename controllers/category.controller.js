@@ -95,11 +95,11 @@ exports.updateCategory = async (req, res) => {
     const { id } = req.params
     let { name, status } = req.body
 
-    
+    console.log(id)
 
-    await Category.findByIdAndUpdate({ _id: id }, { $set: {name, status} })
+    //await Category.findByIdAndUpdate({ _id: id }, { $set: {name, status} })
 
-    res.status(200).json({ message: "Category update successfully" })
+    //res.status(200).json({ message: "Category update successfully" })
   }
   catch (err) {
     console.error(err)
