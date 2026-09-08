@@ -19,7 +19,7 @@ let images = req.files
     // }
     let  newProduct =  new Product({
     name, 
-    price: Number (price), 
+    price: price, 
     salePrice:priceSale,
     description,
     material,
