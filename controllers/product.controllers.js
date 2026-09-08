@@ -29,9 +29,10 @@ exports.createProduct = async (req, res) => {
     category:JSON.parse(category)
    }) 
     
-  
-   await newProduct.save()
-   return res.status(200).json({message:'Product is create successful'})
+  console.log(images)
+   //await newProduct.save()
+   return res.status(200).json(images)
+  //return res.status(200).json({message:'Product is create successful'})
 
 }catch (err) {
   console.error(err)
