@@ -11,7 +11,7 @@ const upload = multer(); // Initialize multer without a storage destination
 const controller = require("../controllers/product.controllers");
 
 // Define rout
-router.post('/createProduct/', upload.none() ,controller.createProduct)
+router.post('/createProduct', upload.none() ,controller.createProduct)
 router.get("/getAllProduct", controller.getAllProduct)
 router.get("/getProductsByCategoryName/:name", controller.getProductByCateName)
 router.get("/getProductById/:id", controller.getProductById)
