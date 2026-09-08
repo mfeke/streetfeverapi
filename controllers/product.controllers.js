@@ -76,3 +76,17 @@ exports.getProductsByName = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+exports.getProductByCateName = async ( req, res) =>{
+
+  let {name} = req.params
+  //let products = Product.find({
+     // category: { $elemMatch: { name } }
+  //})
+  
+  const products = await Product.find({
+      category: { $elemMatch: { name } }
+      });
+
+  res.status(200).json(products)
+
+}

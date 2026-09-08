@@ -13,6 +13,7 @@ const controller = require("../controllers/product.controllers");
 // Define rout
 router.post('/createProduct/', upload.array('images') ,controller.createProduct)
 router.get("/getAllProduct", controller.getAllProduct)
+router.get("/getProductsByCategoryName/:name", controller.getProductByCateName)
 router.get("/getProductById/:id", controller.getProductById)
 router.get("/getProductsByName/:name", controller.getProductsByName)
 module.exports = router; // Export the router
