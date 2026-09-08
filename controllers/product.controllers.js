@@ -9,7 +9,7 @@ const imageUpload = require("../controllers/image")
 exports.createProduct = async (req, res) => {
   try {
     const { id } = req.params
-    const { name, price, priceSale, description, colour, sizes, category } = req.body
+    const { name, price, priceSale, description, colour, material, variant, category } = req.body
 let images = req.files
     images = images.map(info => info.location);
     
@@ -22,7 +22,8 @@ let images = req.files
     price: Number (price), 
     salePrice:priceSale,
     description,
-    stock:JSON.parse(sizes),
+    material,
+    variant:JSON.parse(variant),
     images,
     category:JSON.parse(category)
    }) 

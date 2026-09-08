@@ -8,7 +8,8 @@ const Product = mongoose.model(
     salePrice: String,
     description:String,
     images: Array,
-    stock: Array,
+    material:String,
+    variant: Array,
     category: Array,
   })
 );
