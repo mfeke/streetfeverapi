@@ -18,16 +18,16 @@ exports.createProduct = async (req, res) => {
     //if(!categoryFound){
     // return res.status(400).json({message:"Category does not exist"})
     // }
-    let  newProduct =  new Product({
-    name, 
-    price,
-    priceSale,
-    description,
-    material,
-    variant:JSON.parse(variant),
-    images,
-    category:JSON.parse(category)
-   }) 
+   // let  newProduct =  new Product({
+    //name, 
+   // price,
+   // priceSale,
+   // description,
+    //material,
+   // variant:JSON.parse(variant),
+    //images,
+    //category:JSON.parse(category)
+  // }) 
     
   console.log(images)
    //await newProduct.save()
