@@ -11,8 +11,8 @@ exports.createProduct = async (req, res) => {
     const { id } = req.params
     const { name, price, priceSale, description, colour, material, variant, category } = req.body
 
-    //let images = req.files
-    //images = images.map(info => info.location);
+    let images = req.files
+    images = images.map(info => info.location);
     
 
     //if(!categoryFound){
@@ -21,11 +21,11 @@ exports.createProduct = async (req, res) => {
     let  newProduct =  new Product({
     name, 
     price,
-    salePrice,
+    priceSale,
     description,
     material,
     variant:JSON.parse(variant),
-   // images,
+    images,
     category:JSON.parse(category)
    }) 
     
