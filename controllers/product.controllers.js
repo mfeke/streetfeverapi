@@ -8,11 +8,13 @@ const imageUpload = require("../controllers/image")
 
 exports.createProduct = async (req, res) => {
   try {
-    const { id } = req.params
+    
     const { name, price, priceSale, description, colour, material, variant, category } = req.body
 
-    let images = req.files
-    images = images.map(info => info.location);
+    
+    //let images = req.files
+    let images = await  imageUpload.UploadImages(req.files)
+    //images = images.map(info => info.location);
     
 
     //if(!categoryFound){
@@ -29,9 +31,9 @@ exports.createProduct = async (req, res) => {
     //category:JSON.parse(category)
   // }) 
     
-  console.log(images)
+  
    //await newProduct.save()
-   return res.status(200).json(images)
+  return res.status(200).json(images)
   //return res.status(200).json({message:'Product is create successful'})
 
 }catch (err) {
