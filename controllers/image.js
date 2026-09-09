@@ -8,6 +8,10 @@ const s3Client = new S3Client({
                 accessKeyId: process.env.AWS_AKEY,
                 secretAccessKey: process.env.AWS_SKEY,
         },
+        requestHandler: {
+                connectionTimeout: 5000,
+        },
+
 });
 
 exports.UploadImages = async (fileImages) => {
@@ -31,7 +35,7 @@ exports.UploadImages = async (fileImages) => {
                 const location = `https://${process.env.BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
 
                 // Return complete file data object
-                return location 
+                return location
         });
 
         return await Promise.all(uploadPromises);
