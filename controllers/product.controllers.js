@@ -8,38 +8,38 @@ const imageUpload = require("../controllers/image")
 
 exports.createProduct = async (req, res) => {
   try {
-    
+
     const { name, price, priceSale, description, colour, material, variant, category } = req.body
 
-    
-    //let images = req.files
-    let images = await  imageUpload.UploadImages(req.files)
-    //images = images.map(info => info.location);
-    
+
+    let images = await imageUpload.UploadImages(req.files)
+
+
 
     //if(!categoryFound){
     // return res.status(400).json({message:"Category does not exist"})
     // }
-   // let  newProduct =  new Product({
-    //name, 
-   // price,
-   // priceSale,
-   // description,
-    //material,
-   // variant:JSON.parse(variant),
-    //images,
-    //category:JSON.parse(category)
-  // }) 
-    
-  
-   //await newProduct.save()
-  return res.status(200).json(images)
-  //return res.status(200).json({message:'Product is create successful'})
+    let newProduct = new Product({
+      name,
+      price,
+      colour,
+      priceSale,
+      description,
+      material,
+      variant: JSON.parse(variant),
+      images,
+      category: JSON.parse(category)
+    })
 
-}catch (err) {
-  console.error(err)
-  res.status(500).json({ message: err.message })
-}
+
+    await newProduct.save()
+    
+    return res.status(200).json({ message: 'Product is create successful' })
+
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ message: err.message })
+  }
 }
 
 
@@ -80,16 +80,16 @@ exports.getProductsByName = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-exports.getProductByCateName = async ( req, res) =>{
+exports.getProductByCateName = async (req, res) => {
 
-  let {name} = req.params
+  let { name } = req.params
   //let products = Product.find({
-     // category: { $elemMatch: { name } }
+  // category: { $elemMatch: { name } }
   //})
-  
+
   const products = await Product.find({
-      category: { $elemMatch: { name } }
-      });
+    category: { $elemMatch: { name } }
+  });
 
   res.status(200).json(products)
 
