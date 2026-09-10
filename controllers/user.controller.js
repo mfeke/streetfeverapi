@@ -4,62 +4,48 @@ const jwt = require("jsonwebtoken")
 const bcrypt = require("bcryptjs");
 const User = require("../models/user.model");
 const Code = require("../models/verify.model")
+
+const Role = require("../models/roles.model")
+
+
 const nodemailer = require('nodemailer');
 let verifyCode = Math.floor(100 + Math.random() * 9000)
 const authConfig = require("../db/auth.config");
 const { config } = require("dotenv");
 
+
+
 exports.signup = async (req, res) => {
     try {
-        res.set({
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "*",
-        })
 
+        const { fullName, email, password } = req.body
 
-        const { firstName, lastName, email, pass } = req.body
-
-        const hashedPassword = bcrypt.hashSync(pass, 8);
-
-
-        if (!email && !firstName && !lastName && !hashedPassword) {
-            return res.send(400).json({ message: "Missing values" })
-        }
-
-        let userFound = await User.findOne({ email })
-        if (!userFound) {
-            let user = new User({
-                firstName,
-                pass: hashedPassword,
-                lastName,
-                email
-            })
-
-            let newUser = await user.save()
-
-
-
-            let token = await jwt.sign({ id: newUser.id }, authConfig.secret, {
-                expiresIn: 86400
-
-            })
-
-
-            return res.status(200).json({
-                message: "Account Created",
-                id: newUser.id,
-                accessToken: token,
-            });
-
+        const hashedPassword = await bcrypt.hash(password, 8);
+        const user = new User({
+            fullName: req.body.fullName,
+            email: req.body.email,
+            password: hashedPassword
+        });
+        if (req.body.roles && req.body.roles.length > 0) {
+            const roles = await Role.find({ name: { $in: req.body.roles } });
+            user.roles = roles.map(role => role._id);
         } else {
-            return res.status(400).json({ message: "Email already exists." });
-
+            const defaultRole = await Role.findOne({ name: "user" });
+            if (defaultRole) {
+                user.roles = [defaultRole._id];
+            }
         }
 
+        await user.save();
+
+        return res.status(200).send({ message: "Admin was registered successfully!" });
     } catch (err) {
-        res.status(500).send({ message: err.message });
+        console.log(err)
+        return res.status(500).send({ message: err.message || err });
     }
-}
+};
+
+
 exports.signin = async (req, res) => {
     try {
         let { email, pass } = req.body

@@ -6,9 +6,8 @@ const User = mongoose.model(
     "User",
     new mongoose.Schema({
         email: String,
-        firstName:String,
-        lastName:String,
-        pass:String,
+        fullName:String,
+        password:String,
         roles:[
             {
                 type: mongoose.Schema.Types.ObjectId,

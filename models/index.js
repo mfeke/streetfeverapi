@@ -8,5 +8,5 @@ db.user = require("../models/user.model")
 db.category = require("../models/categories.model")
 db.verifyCode = require("../models/verify.model")
 db.url = dbConfig.url
-
+db.role = require('../models/roles.model')
 module.exports = db

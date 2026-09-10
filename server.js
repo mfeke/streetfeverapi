@@ -41,6 +41,8 @@ app.get("/", (req, res) => {
 
 
 const db = require("./models");
+
+const Role = db.role;
 db.mongoose.set('strictQuery', true);
 
 db.mongoose
@@ -48,6 +50,7 @@ db.mongoose
   })
   .then(() => {
     console.log("Connected to the database!");
+    initial()
   })
   .catch(err => {
     console.log("Cannot connect to the database!", err);
@@ -63,3 +66,22 @@ app.listen(PORT, () => {
 })
 
 module.exports = app;
+
+async function initial() {
+  try {
+    const count = await Role.estimatedDocumentCount();
+
+    if (count === 0) {
+      const roles = [
+        { name: "user" },
+        { name: "admin" }
+      ];
+
+      await Role.insertMany(roles);
+
+      console.log("added 'user' and 'admin' to roles collection");
+    }
+  } catch (err) {
+    console.error("Error initializing roles:", err);
+  }
+}

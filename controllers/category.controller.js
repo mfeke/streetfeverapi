@@ -27,6 +27,8 @@ exports.createCategory = async (req, res) => {
 
 }
 
+
+
 exports.createSubCategory = async (req, res) => {
 
   const { id } = req.params
@@ -96,7 +98,7 @@ exports.updateCategory = async (req, res) => {
     let { name, status } = req.body
 
 
-    await Category.findByIdAndUpdate({ _id: id }, { $set: {name, status} })
+    await Category.findByIdAndUpdate({ _id: id }, { $set: { name, status } })
 
     res.status(200).json({ message: "Category update successfully" })
   }
@@ -128,14 +130,14 @@ exports.getSubCategory = async (req, res) => {
 
   res.status(200).json(categories);
 };
-exports.deleteCategoryById = async (req, res)=>{
+exports.deleteCategoryById = async (req, res) => {
   try {
 
-    const { id} = req.params
-    await Category.findByIdAndDelete({_id:id})
-   
-    res.status(200).json({message:'Category is delete successfully'})
-    
+    const { id } = req.params
+    await Category.findByIdAndDelete({ _id: id })
+
+    res.status(200).json({ message: 'Category is delete successfully' })
+
   } catch (error) {
     res.status(500).send(error)
   }
