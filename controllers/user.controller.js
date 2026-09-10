@@ -48,7 +48,7 @@ exports.signup = async (req, res) => {
 
 exports.signin = async (req, res) => {
     try {
-        let { email, pass } = req.body
+        let { email, password } = req.body
         let user = await User.findOne({ email })
 
         if (!user) {
@@ -57,8 +57,8 @@ exports.signin = async (req, res) => {
         }
 
         let passwordlsVaild = bcrypt.compareSync(
-            pass,
-            user.pass
+            password,
+            user.password
         )
 
         // res.status(200).json(passwordlsVaild)
