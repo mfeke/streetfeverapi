@@ -19,12 +19,19 @@ exports.signup = async (req, res) => {
     try {
         const { fullName, email, mobileNumber, password } = req.body;
 
+    
+        if (!fullName || !mobileNumber || !email || !password) {
+            return res.status(400).json({
+                error: 'All fields fullName mobile number email password are required and cannot be empty'
+            });
+        }
 
+        
         const hashedPassword = await bcrypt.hash(password, 8);
         const user = new User({
             fullName,
             email,
-            mobileNumber: JSON.parse(mobileNumber),
+            mobileNumber,
             password: hashedPassword
         });
 
@@ -32,7 +39,7 @@ exports.signup = async (req, res) => {
         if (req.body.roles && req.body.roles.length > 0) {
             //const roles = await Role.find({ name: { $in: req.body.roles } });
             const roles = await Role.find({ name: { $in: JSON.parse(req.body.roles) } });
-            
+
             user.roles = roles.map(role => role._id);
         } else {
 
@@ -58,10 +65,10 @@ exports.signup = async (req, res) => {
 
 exports.signin = async (req, res) => {
     try {
-       let { email, password } = req.body
+        let { email, password } = req.body
         let user = await User.findOne({ email })
 
-        
+
         if (!user) {
             return res.status(404).send({ message: "We couldn't find an account matching that email" })
 
