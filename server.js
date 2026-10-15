@@ -74,12 +74,13 @@ async function initial() {
     if (count === 0) {
       const roles = [
         { name: "user" },
+        {name:'merchant'},
         { name: "admin" }
       ];
 
       await Role.insertMany(roles);
 
-      console.log("added 'user' and 'admin' to roles collection");
+      console.log("added 'user' and 'merchant' and 'admin' to roles collection");
     }
   } catch (err) {
     console.error("Error initializing roles:", err);

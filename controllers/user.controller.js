@@ -17,19 +17,25 @@ const { config } = require("dotenv");
 
 exports.signup = async (req, res) => {
     try {
+        const { fullName, email, mobileNumber, password } = req.body;
 
-        const { fullName, email, password } = req.body
 
         const hashedPassword = await bcrypt.hash(password, 8);
         const user = new User({
-            fullName: req.body.fullName,
-            email: req.body.email,
+            fullName,
+            email,
+            mobileNumber: JSON.parse(mobileNumber),
             password: hashedPassword
         });
+
+
         if (req.body.roles && req.body.roles.length > 0) {
-            const roles = await Role.find({ name: { $in: req.body.roles } });
+            //const roles = await Role.find({ name: { $in: req.body.roles } });
+            const roles = await Role.find({ name: { $in: JSON.parse(req.body.roles) } });
+            
             user.roles = roles.map(role => role._id);
         } else {
+
             const defaultRole = await Role.findOne({ name: "user" });
             if (defaultRole) {
                 user.roles = [defaultRole._id];
@@ -38,18 +44,23 @@ exports.signup = async (req, res) => {
 
         await user.save();
 
-        return res.status(200).send({ message: "Admin was registered successfully!" });
+        return res.status(200).send({ message: "User was registered successfully!" });
     } catch (err) {
-        console.log(err)
+        console.log(err);
         return res.status(500).send({ message: err.message || err });
     }
 };
 
 
+
+
+
+
 exports.signin = async (req, res) => {
     try {
-        let { email, password } = req.body
+       let { email, password } = req.body
         let user = await User.findOne({ email })
+
         
         if (!user) {
             return res.status(404).send({ message: "We couldn't find an account matching that email" })
@@ -79,6 +90,7 @@ exports.signin = async (req, res) => {
             id: user._id,
             fullName: user.fullName,
             email: user.email,
+            roles: user.roles,
             accessToken: token
 
         })
