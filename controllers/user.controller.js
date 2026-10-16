@@ -9,24 +9,23 @@ const Role = require("../models/roles.model")
 
 
 const nodemailer = require('nodemailer');
-let verifyCode = Math.floor(100 + Math.random() * 9000)
-const authConfig = require("../db/auth.config");
-const { config } = require("dotenv");
+let verifyCode = Math.floor(100000 + Math.random() * 900000);
 
+const authConfig = require("../db/auth.config");
 
 
 exports.signup = async (req, res) => {
     try {
         const { fullName, email, mobileNumber, password } = req.body;
 
-    
+
         if (!fullName || !mobileNumber || !email || !password) {
             return res.status(400).json({
                 error: 'All fields fullName mobile number email password are required and cannot be empty'
             });
         }
 
-        
+
         const hashedPassword = await bcrypt.hash(password, 8);
         const user = new User({
             fullName,
@@ -37,9 +36,7 @@ exports.signup = async (req, res) => {
 
 
         if (req.body.roles && req.body.roles.length > 0) {
-            //const roles = await Role.find({ name: { $in: req.body.roles } });
             const roles = await Role.find({ name: { $in: JSON.parse(req.body.roles) } });
-
             user.roles = roles.map(role => role._id);
         } else {
 
@@ -49,9 +46,26 @@ exports.signup = async (req, res) => {
             }
         }
 
-        await user.save();
 
-        return res.status(200).send({ message: "User was registered successfully!" });
+        let newUser = user.save()
+
+        const merchant = await Role.find({ name: { $in: JSON.parse(req.body.roles) } });
+
+        let roleName = merchant.map(role => role.name)
+
+
+        if (roleName[0] === 'merchant') {
+            sndEmail(email, verifyCode)
+        }
+        let token = jwt.sign({ id: user.id }, authConfig.secret, {
+            expiresIn: 86400
+
+        })
+
+        return res.status(200).send({
+            accessToken: token,
+            message: "User was registered successfully!"
+        });
     } catch (err) {
         console.log(err);
         return res.status(500).send({ message: err.message || err });
@@ -86,7 +100,6 @@ exports.signin = async (req, res) => {
                 message: "Invalid Password!"
             })
         }
-
 
 
         let token = jwt.sign({ id: user.id }, authConfig.secret, {
@@ -190,9 +203,9 @@ let sndEmail = async (email, opt) => {
 
         // 2. Define the email details
         const mailOptions = {
-            from: '"Jump With The Boys" <no-reply@jumpwiththeboys.com>', // Sender address
+            from: '"Makazana" <no-reply@makazana.com>', // Sender address
             to: email,                     // List of receivers
-            subject: `${opt} is your one-time code for Jump With The Boys`,
+            subject: `${opt} is your one-time code Makazana`,
             html: getOtp(opt),
         };
 
