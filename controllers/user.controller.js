@@ -53,6 +53,7 @@ exports.signup = async (req, res) => {
 
         let roleName = merchant.map(role => role.name)
 
+        // my role 
 
         if (roleName[0] === 'merchant') {
             sndEmail(email, verifyCode)
