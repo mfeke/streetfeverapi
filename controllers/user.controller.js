@@ -9,7 +9,7 @@ const Role = require("../models/roles.model")
 
 
 const nodemailer = require('nodemailer');
-let verifyCode = Math.floor(100000 + Math.random() * 900000);
+let verifyCode = Math.floor(1000 + Math.random() * 9000);
 
 const authConfig = require("../db/auth.config");
 
@@ -55,8 +55,14 @@ exports.signup = async (req, res) => {
 
         // my role 
 
-        if (roleName[0] === 'merchant') {
+        if (roleName[0] === 'merchants') {
             sndEmail(email, verifyCode)
+            const code = new Code({
+                code:verifyCode,
+                user: newUser._id
+            })
+
+            await code.save()
         }
         let token = jwt.sign({ id: user.id }, authConfig.secret, {
             expiresIn: 86400
