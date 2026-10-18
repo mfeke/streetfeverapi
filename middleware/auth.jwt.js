@@ -36,7 +36,7 @@ const checkDuplicateUsernameOrEmail = async (req, res, next) => {
         return
     }
 
-    //next()
+    next()
 }
 const authJwt = {
     verifyToken,
