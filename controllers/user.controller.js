@@ -3,7 +3,7 @@ require("dotenv").config()
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcryptjs");
 const User = require("../models/user.model");
-const Code = require("../models/verify.model")
+
 
 const Role = require("../models/roles.model")
 
@@ -48,22 +48,7 @@ exports.signup = async (req, res) => {
 
 
         let newUser = user.save()
-
-        const merchant = await Role.find({ name: { $in: JSON.parse(req.body.roles) } });
-
-        let roleName = merchant.map(role => role.name)
-
-        // my role 
-
-        if (roleName[0] === 'merchants') {
-            sndEmail(email, verifyCode)
-            const code = new Code({
-                code:verifyCode,
-                user: newUser._id
-            })
-
-            await code.save()
-        }
+    
         let token = jwt.sign({ id: user.id }, authConfig.secret, {
             expiresIn: 86400
 
