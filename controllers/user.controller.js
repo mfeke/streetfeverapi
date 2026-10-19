@@ -88,8 +88,6 @@ exports.signin = async (req, res) => {
     try {
         let { email, password } = req.body
         let user = await User.findOne({ email })
-
-
         if (!user) {
             return res.status(404).send({ message: "We couldn't find an account matching that email" })
 
@@ -109,6 +107,8 @@ exports.signin = async (req, res) => {
         }
 
 
+        
+
         let token = jwt.sign({ id: user.id }, authConfig.secret, {
             expiresIn: 86400
 
@@ -121,9 +121,6 @@ exports.signin = async (req, res) => {
             accessToken: token
 
         })
-
-
-
     } catch (err) {
         console.error(err)
         res.status(500).send({ message: err.message });

@@ -10,16 +10,16 @@ const checkDuplicateEmail = async (req, res, next) => {
         let role = roles.map(role =>  role._id)
 
 
-        let existRole = JSON.stringify(role[0])
-
+        
         // Check for duplicate email only
-        const userByEmail = await User.findOne({ email: req.body.email, roles: [existRole]  });
+        const userByEmail = await User.findOne({ email: req.body.email, roles: role  });
         if (userByEmail) {
-            return res.status(400).send({ message: "Failed! Email is already in use!" });
+            return res.status(400).send({ message: "Failed! Email is already in use!" })
         }
 
-        
-        //next();
+
+
+        next();
     } catch (err) {
         return res.status(500).send({ message: err.message || err });
     }
