@@ -5,16 +5,23 @@ const User = db.user;
 const checkDuplicateEmail = async (req, res, next) => {
     try {
 
+        const { email, mobileNumber } = req.body
 
-        const roles = await Roles.find({ name: { $in: JSON.parse(req.body.roles) } });
-        let role = roles.map(role =>  role._id)
+        if (!req.body.roles) {
+
+            // Check for duplicate email only
+            const userByEmail = await User.findOne({ email });
+            if (userByEmail) {
+                return res.status(400).send({ message: "Failed! Email is already in use!" })
+            }
 
 
-        
-        // Check for duplicate email only
-        const userByEmail = await User.findOne({ email: req.body.email, roles: role  });
-        if (userByEmail) {
-            return res.status(400).send({ message: "Failed! Email is already in use!" })
+            if (req.body.mobileNumber) {
+                const userByMobile = await User.findOne({ mobileNumber:JSON.parse(mobileNumber) })
+                if (userByMobile) {
+                    return res.status(400).send({ message: "Failed! Mobile number is already in use!" })
+                }
+            }
         }
 
 
@@ -29,7 +36,7 @@ const checkDuplicateEmail = async (req, res, next) => {
 
 const verifySignUp = {
     checkDuplicateEmail,
-    
+
 };
 
 module.exports = verifySignUp;

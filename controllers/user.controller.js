@@ -18,7 +18,6 @@ exports.signup = async (req, res) => {
     try {
         const { fullName, email, mobileNumber, password } = req.body;
 
-
         if (!fullName || !mobileNumber || !email || !password) {
             return res.status(400).json({
                 error: 'All fields fullName mobile number email password are required and cannot be empty'
@@ -35,20 +34,14 @@ exports.signup = async (req, res) => {
         });
 
 
-        if (req.body.roles && req.body.roles.length > 0) {
-            const roles = await Role.find({ name: { $in: JSON.parse(req.body.roles) } });
-            user.roles = roles.map(role => role._id);
-        } else {
-
-            const defaultRole = await Role.findOne({ name: "user" });
-            if (defaultRole) {
-                user.roles = [defaultRole._id];
-            }
+        const defaultRole = await Role.findOne({ name: "user" });
+        if (defaultRole) {
+            user.roles = [defaultRole._id];
         }
 
 
         let newUser = user.save()
-    
+
         let token = jwt.sign({ id: user.id }, authConfig.secret, {
             expiresIn: 86400
 
@@ -92,7 +85,7 @@ exports.signin = async (req, res) => {
         }
 
 
-        
+
 
         let token = jwt.sign({ id: user.id }, authConfig.secret, {
             expiresIn: 86400
