@@ -21,7 +21,6 @@ const checkDuplicateEmail = async (req, res, next) => {
                     return res.status(400).send({ message: "Failed! Mobile number is already in use!" })
                 }
             }
-
             
         }
 
@@ -33,7 +32,7 @@ const checkDuplicateEmail = async (req, res, next) => {
             }
 
             if (req.body.mobileNumber) {
-                const userByMobile = await Merchant.findOne({ mobileNumber: JSON.parse(mobileNumber) })
+                const userByMobile = await Merchant.findOne({ mobileNumber: Number(mobileNumber) })
                 if (userByMobile) {
                     return res.status(400).send({ message: "Failed! Mobile number is already in use!" })
                 }
@@ -41,7 +40,7 @@ const checkDuplicateEmail = async (req, res, next) => {
 
         }
 
-        //next();
+        next();
     } catch (err) {
         return res.status(500).send({ message: err.message || err });
     }

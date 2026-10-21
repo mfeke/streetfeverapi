@@ -24,3 +24,4 @@ const authJwt = {
     verifyToken,
 }
 
+module.exports =  authJwt

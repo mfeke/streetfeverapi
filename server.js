@@ -5,6 +5,7 @@ const app = express()
 const PORT = process.env.PORT
 const cors = require("cors")
 const userRouter = require("./routes/user.route")
+const merchantRouter  = require('./routes/merchant.route')
 const productRouter = require("./routes/product.route")
 const categoryRouter = require("./routes/category.route")
 
@@ -59,6 +60,7 @@ db.mongoose
 app.use('/api/auth', userRouter)
 app.use('/api/category', categoryRouter)
 app.use('/api/product', productRouter)
+app.use('/api/auth', merchantRouter)
 app.listen(PORT, () => {
   console.log(`Server running at port:${PORT}`)
 })

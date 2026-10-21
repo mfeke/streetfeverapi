@@ -3,6 +3,10 @@ const mongoose = require("mongoose");
 const Merchant = mongoose.model(
     "Merchant",
     new mongoose.Schema({
+        fullName:String,
+        email:String,
+        mobileNumber: Number,
+        password:String,
         storeName: String,
         slug: String,
         businessType: String,
