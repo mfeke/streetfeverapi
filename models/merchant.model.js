@@ -12,16 +12,16 @@ const Merchant = mongoose.model(
         businessType: String,
         logoUrl: String,
         contact: {
-            countryCode: String,
-            phone: Number,
-            email: String
+            countryCode: {type:String},
+            phone:{type: Number},
+            email: {type:String}
         },
         location: {
-            type: String,
+            
             // coordinates: [18.4241, -33.9249], 
-            address: String,
-            city: String,
-            postalCode: Number
+            address:{ type: String},
+            city: {type:String},
+            postalCode:{type: Number}
         },
         operatingHours: Array,
         deliverySettings: {

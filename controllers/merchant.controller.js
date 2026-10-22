@@ -114,7 +114,9 @@ exports.updateProfile = async (req, res) => {
         const { userId } = req
 
         console.log(req.body)
-        
+
+
+
         let merchant = await Merchant.findOneAndUpdate({ _id: userId }, req.body, { useFindAndModify: false })
 
         if (!merchant) {
@@ -129,5 +131,6 @@ exports.updateProfile = async (req, res) => {
     }
 
 }
+
 
 
