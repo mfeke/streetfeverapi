@@ -16,10 +16,10 @@ const authConfig = require("../db/auth.config");
 
 exports.signup = async (req, res) => {
     try {
-        const { fullName, email, mobileNumber, password } = req.body;
+        const { storeName, email,  password } = req.body;
 
 
-        if (!fullName || !mobileNumber || !password || !email) {
+        if (!storeName || !password || !email) {
             return res.status(400).json({
                 error: 'All fields fullName mobile number email password are required and cannot be empty'
             });
@@ -29,9 +29,8 @@ exports.signup = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 8);
 
         const merchant = new Merchant({
-            fullName,
+            storeName,
             email,
-            mobileNumber: Number(mobileNumber),
             password: hashedPassword
         });
 
@@ -93,7 +92,7 @@ exports.signin = async (req, res) => {
         })
         res.status(200).send({
             id: merchant._id,
-            fullName: merchant.fullName,
+            storeName: merchant.storeName,
             email: merchant.email,
             roles: merchant.roles,
             accessToken: token
