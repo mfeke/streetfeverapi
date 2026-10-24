@@ -16,7 +16,7 @@ const authConfig = require("../db/auth.config");
 
 exports.signup = async (req, res) => {
     try {
-        const { storeName, email,  password } = req.body;
+        const { storeName, email, password } = req.body;
 
 
         if (!storeName || !password || !email) {
@@ -132,4 +132,17 @@ exports.updateProfile = async (req, res) => {
 }
 
 
+exports.getProfile = async (req, res) => {
 
+    try {
+
+        const { userId } = req
+        let merchant = await Merchant.findOne({ _id: userId })
+        res.status(200).json(merchant)
+
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+
+    }
+
+}

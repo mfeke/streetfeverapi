@@ -13,5 +13,6 @@ router.post("/merchant/signup", [upload.none(), verifySignUp.checkDuplicateEmail
 //router.get("/merchant/getUser")
 router.post("/merchant/signin", upload.none(), controller.signin)
 router.put("/merchant/updateProfile", [upload.none(), authJwt.verifyToken], controller.updateProfile)
+router.get("/merchant/getProfile", [authJwt.verifyToken], controller.getProfile)
 
 module.exports = router; // Export the router
