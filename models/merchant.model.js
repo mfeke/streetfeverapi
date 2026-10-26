@@ -3,21 +3,20 @@ const mongoose = require("mongoose");
 const Merchant = mongoose.model(
     "Merchant",
     new mongoose.Schema({
-        fullName:String,
         email:String,
         mobileNumber: Number,
         password:String,
         storeName: String,
         slug: String,
         businessType: String,
-        logoUrl: String,
+        logoUrl:{type: String},
         contact: {
             countryCode: {type:String},
+            fullName: {type: String},
             phone:{type: Number},
             email: {type:String}
         },
         location: {
-            
             // coordinates: [18.4241, -33.9249], 
             address:{ type: String},
             city: {type:String},
